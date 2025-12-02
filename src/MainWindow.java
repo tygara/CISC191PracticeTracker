@@ -1,6 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Main application window for the Practice Tracker GUI.
+ * 
+ * This class sets up a simple dark-themed interface with buttons for
+ * session management and a list displaying existing practice sessions.
+ * 
+ * IS-A: MainWindow is a JFrame.
+ * HAS-A: MainWindow has buttons (new,load,delete,newplan) and a session list UI component.
+ */
 public class MainWindow extends JFrame {
 
   private final JButton newSessionButton;
@@ -9,6 +18,11 @@ public class MainWindow extends JFrame {
   private final JButton newPlanButton;
   private final JList<String> sessionList;
 
+  /**
+   * Constructs the main window and initializes all UI components,
+   * layout, colors, and button styling. Also provides temporary
+   * mock loader for populating the session list for test cases to pass
+   */
   public MainWindow() {
     super("Practice Tracker");
 
@@ -37,7 +51,7 @@ public class MainWindow extends JFrame {
     newPlanButton = new JButton("New Plan");
 
     JButton[] buttons = {
-      newSessionButton, loadSessionButton, deleteSessionButton, newPlanButton
+        newSessionButton, loadSessionButton, deleteSessionButton, newPlanButton
     };
 
     for (JButton b : buttons) {
@@ -71,22 +85,24 @@ public class MainWindow extends JFrame {
     loadSessionButton.addActionListener(e -> loadMockSessions());
   }
 
-    private void loadMockSessions() {
-      DefaultListModel<String> model = (DefaultListModel<String>) sessionList.getModel();
-      model.clear();
-      model.addElement("2025-01-01 - 20 min - Major Scales");
-      model.addElement("2025-01-02 - 35 min - Arpeggios + Songs");
-      model.addElement("2025-01-03 - 15 min - Ear Training");
-      model.addElement("2025-01-04 - 40 min - Repertoire Run-through");
-    }
+  /**
+   * Populates the session list with mock example sessions.
+   * Used only for early UI testing and screenshots.
+   */
+  private void loadMockSessions() {
+    DefaultListModel<String> model = (DefaultListModel<String>) sessionList.getModel();
+    model.clear();
+    model.addElement("2025-01-01 - 20 min - Major Scales");
+    model.addElement("2025-01-02 - 35 min - Arpeggios + Songs");
+    model.addElement("2025-01-03 - 15 min - Ear Training");
+    model.addElement("2025-01-04 - 40 min - Repertoire Run-through");
+  }
 
-
-    // TODO:: Later hook these up to JsonStore / Session logic
-    // newSessionButton.addActionListener(e -> { ... });
-    // loadSessionButton.addActionListener(e -> { ... });
-    // deleteSessionButton.addActionListener(e -> { ... });
-    // newPlanButton.addActionListener(e -> { ... });
-
+  /**
+   * Entry point for launching the Practice Tracker window.
+   *
+   * @param args command-line arguments (unused)
+   */
   public static void main(String[] args) {
     SwingUtilities.invokeLater(() -> {
       MainWindow window = new MainWindow();
@@ -94,3 +110,4 @@ public class MainWindow extends JFrame {
     });
   }
 }
+
