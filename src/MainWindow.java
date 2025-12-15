@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
  * Main application window for the Practice Tracker GUI.
@@ -32,6 +33,7 @@ public class MainWindow extends JFrame {
     Color fg = new Color(230, 230, 230);
     Color accent = new Color(70, 130, 180);
 
+    // Overrides UI properties for all Swing Buttons in the application 
     UIManager.put("Button.focus", accent);
 
     // Basic Window Setup
@@ -83,6 +85,7 @@ public class MainWindow extends JFrame {
 
     // Mock loader for screenshot
     loadSessionButton.addActionListener(e -> loadMockSessions());
+    newPlanButton.addActionListener(e -> showWeeklyPlan());
   }
 
   /**
@@ -96,6 +99,25 @@ public class MainWindow extends JFrame {
     model.addElement("2025-01-02 - 35 min - Arpeggios + Songs");
     model.addElement("2025-01-03 - 15 min - Ear Training");
     model.addElement("2025-01-04 - 40 min - Repertoire Run-through");
+  }
+
+
+  /**
+   *  Generates and displays a mock weekly practice plan.
+   *  Used for Week 4 plan visualization.
+   */
+  private void showWeeklyPlan() {
+    List<Exercise> exercises = List.of(
+      new ScaleExercise("Major Scales", 15, "Major", "C", 90),
+      new ArpeggioExercise("Arpeggios", 10, "Cmaj7", 100),
+      new SongExercise("Recitle", 20, "Fade To Black", "Metallica")
+    );
+
+    PlanGenerator generator = new PlanGenerator();
+    WeeklyPlan plan = generator.generate(exercises);
+
+    PlanDialog dialog = new PlanDialog(this, plan);
+    dialog.setVisible(true);
   }
 
   /**

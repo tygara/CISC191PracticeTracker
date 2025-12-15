@@ -38,7 +38,6 @@ public class ArpeggioExercise extends Exercise {
 
 /** 
  *  Returns the chordSymbol linked to this exercise 
- *
  *  @return the chord symbol
  */
   public String getChordSymbol() {
