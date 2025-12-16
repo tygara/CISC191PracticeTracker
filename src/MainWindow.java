@@ -28,6 +28,7 @@ public class MainWindow extends JFrame {
 
   private final JButton newSessionButton;
   private final JButton loadSessionButton;
+  private final JButton saveSessionButton;
   private final JButton deleteSessionButton;
   private final JButton newPlanButton;
 
@@ -91,10 +92,11 @@ public class MainWindow extends JFrame {
     getContentPane().setBackground(bg);
 
     // Creation of panel with buttons
-    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTERLEFT));
     buttonPanel.setBackground(panelBg);
     newSessionButton = new JButton("New Session");
     loadSessionButton = new JButton("Load Session");
+    saveSessionButton = new JButton("Save Session");
     deleteSessionButton = new JButton("Delete Session");
     newPlanButton = new JButton("New Plan");
 
@@ -103,6 +105,7 @@ public class MainWindow extends JFrame {
     JButton[] buttons = {
         newSessionButton,
         loadSessionButton,
+        saveSessionButton,
         deleteSessionButton,
         newPlanButton
     };
@@ -119,6 +122,7 @@ public class MainWindow extends JFrame {
     // Each call places the buttons inside the top panel so the layout manager can arrange/display
     buttonPanel.add(newSessionButton);
     buttonPanel.add(loadSessionButton);
+    buttonPanel.add(saveSessionButton);
     buttonPanel.add(deleteSessionButton);
     buttonPanel.add(newPlanButton);
 
@@ -167,6 +171,7 @@ public class MainWindow extends JFrame {
     // Wire button to specific functions, call on click
     newSessionButton.addActionListener(e -> createNewSession());
     loadSessionButton.addActionListener(e -> loadSessionFromFile());
+    saveSessionButton.addActionListener(e -> saveSelectedSessionToFile());
     deleteSessionButton.addActionListener(e -> deleteSelectedSession());
     newPlanButton.addActionListener(e -> showWeeklyPlan());
 
@@ -232,6 +237,45 @@ public class MainWindow extends JFrame {
     } catch (IOException ex) {
       JOptionPane.showMessageDialog(this, ex.getMessage(),
           "File Error", JOptionPane.ERROR_MESSAGE);
+    }
+  }
+
+
+  private void saveSelectedSessionToFile() {
+    int index = sessionList.getSelectedIndex();
+    if (index < 0 || index >= sessions.size()) {
+      JOptionPane.showMessageDialog(this,
+          "Select a session to save.",
+          "Save Session",
+          JOptionPane.INFORMATION_MESSAGE);
+      return;
+    }
+
+    JFileChooser chooser = new JFileChooser();
+    chooser.setDialogTitle("Save Session JSON");
+
+    if(chooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
+      return;
+    }
+
+    Path file = chooser.getSelectedFile().toPath();
+
+    // Auto add .json if user forgets to save
+    if(!file.toString().toLowerCase().endsWith(".json")) {
+      file = Path.of(file.toString() + ".json");
+    }
+
+    try {
+    store.save(sessions.get(index), file);
+    JOptionPane.showMessageDialog(this,
+        "Saved to:\n" + file,
+        "Save Session",
+        JOptionPane.INFORMATION_MESSAGE);
+    } catch (IOException ex) {
+      JOptionPane.showMessageDialog(this,
+          "File error: " + ex.getMessage(),
+          "Save Error",
+          JOptionPane.ERROR_MESSAGE);
     }
   }
 
