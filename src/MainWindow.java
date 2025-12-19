@@ -92,7 +92,7 @@ public class MainWindow extends JFrame {
     getContentPane().setBackground(bg);
 
     // Creation of panel with buttons
-    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTERLEFT));
+    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
     buttonPanel.setBackground(panelBg);
     newSessionButton = new JButton("New Session");
     loadSessionButton = new JButton("Load Session");
@@ -261,9 +261,9 @@ public class MainWindow extends JFrame {
     Path file = chooser.getSelectedFile().toPath();
 
     // Auto add .json if user forgets to save
-    if(!file.toString().toLowerCase().endsWith(".json")) {
-      file = Path.of(file.toString() + ".json");
-    }
+    // if(!file.toString().toLowerCase().endsWith(".json")) {
+    //   file = Path.of(file.toString() + ".json");
+    // }
 
     try {
     store.save(sessions.get(index), file);
